@@ -1,5 +1,5 @@
 - stat:
-    path: /usr/lib/postgresql/9.6/lib/hypopg.so
+    path: "/usr/lib/postgresql/{{ pg_version }}/lib/hypopg.so"
   register: hypopg
 
 - name: download hypopg sources

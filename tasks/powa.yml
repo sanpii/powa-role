@@ -1,7 +1,7 @@
 - name: install powa
   become: true
   package:
-    name: postgresql-9.6-powa
+    name: "postgresql-{{ pg_version }}-powa"
     state: present
 
 - name: enable powa extension

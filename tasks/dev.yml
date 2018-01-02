@@ -4,7 +4,7 @@
     name: "{{ item }}"
     state: present
   with_items:
-    - postgresql-server-dev-9.6
+    - "postgresql-server-dev-{{ pg_version }}"
     - git
     - make
     - gcc

@@ -1,5 +1,5 @@
 - stat:
-    path: /usr/lib/postgresql/9.6/lib/pg_stat_kcache.so
+    path: "/usr/lib/postgresql/{{ pg_version }}/lib/pg_stat_kcache.so"
   register: pg_stat_kcache
 
 - name: download pg_stat_kcache sources

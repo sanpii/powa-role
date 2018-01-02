@@ -1,5 +1,5 @@
 - stat:
-    path: /usr/lib/postgresql/9.6/lib/pg_qualstats.so
+    path: "/usr/lib/postgresql/{{ pg_version }}/lib/pg_qualstats.so"
   register: pg_qualstats
 
 - name: install libdpkg-perl
