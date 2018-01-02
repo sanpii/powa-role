@@ -4,24 +4,24 @@
 
 - name: download hypopg sources
   unarchive:
-    src: https://github.com/dalibo/hypopg/archive/1.0.0.tar.gz
+    src: "https://github.com/dalibo/hypopg/archive/{{ powa_hypopg_version }}.tar.gz"
     dest: /tmp
     remote_src: true
   when: hypopg.stat.exists == False
 
 - name: compiling hypopg
   make:
-    chdir: /tmp/hypopg-1.0.0/
+    chdir: "/tmp/hypopg-{{ powa_hypopg_version }}"
   when: hypopg.stat.exists == False
 
 - name: installing hypopg
   become: true
   make:
-    chdir: /tmp/hypopg-1.0.0/
+    chdir: "/tmp/hypopg-{{ powa_hypopg_version }}"
     target: install
   when: hypopg.stat.exists == False
 
 - name: remove sources
   file:
-    path: /tmp/hypopg-1.0.0/
+    path: "/tmp/hypopg-{{ powa_hypopg_version }}"
     state: absent
