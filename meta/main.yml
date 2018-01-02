@@ -13,5 +13,4 @@ galaxy_info:
 
   categories:
     - database
-    - database:sql
-    - development
+    - postgresql
