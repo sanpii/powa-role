@@ -1,0 +1,10 @@
+- name: install pip
+  become: true
+  package:
+    name: python-pip
+    state: present
+
+- name: install powa-web
+  become: true
+  pip:
+    name: powa-web

@@ -1,0 +1,19 @@
+- name: install powa
+  become: true
+  package:
+    name: postgresql-9.6-powa
+    state: present
+
+- name: enable powa extension
+  become: true
+  become_user: postgres
+  postgresql_conf:
+    key: shared_preload_libraries
+    value: powa
+    state: append
+
+- name: restart postgresql
+  become: true
+  service:
+    name: postgresql
+    state: restarted

@@ -1,0 +1,35 @@
+- stat:
+    path: /usr/lib/postgresql/9.6/lib/pg_stat_kcache.so
+  register: pg_stat_kcache
+
+- name: download pg_stat_kcache sources
+  unarchive:
+    src: https://github.com/dalibo/pg_stat_kcache/archive/REL2_0_3.tar.gz
+    dest: /tmp
+    remote_src: true
+  when: pg_stat_kcache.stat.exists == False
+
+- name: compiling pg_stat_kcache
+  make:
+    chdir: /tmp/pg_stat_kcache-REL2_0_3
+  when: pg_stat_kcache.stat.exists == False
+
+- name: installing pg_stat_kcache
+  become: true
+  make:
+    chdir: /tmp/pg_stat_kcache-REL2_0_3
+    target: install
+  when: pg_stat_kcache.stat.exists == False
+
+- name: remove sources
+  file:
+    path: /tmp/pg_stat_kcache-REL2_0_3
+    state: absent
+
+- name: enable pg_stat_kcache extension
+  become: true
+  become_user: postgres
+  postgresql_conf:
+    key: shared_preload_libraries
+    value: pg_stat_kcache
+    state: append

@@ -1,0 +1,10 @@
+- name: install development dependencies
+  become: true
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - postgresql-server-dev-9.6
+    - git
+    - make
+    - gcc

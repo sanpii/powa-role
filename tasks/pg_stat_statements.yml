@@ -1,0 +1,7 @@
+- name: enable pg_stat_statements extension
+  become: true
+  become_user: postgres
+  postgresql_conf:
+    key: shared_preload_libraries
+    value: pg_stat_statements
+    state: append

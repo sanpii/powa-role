@@ -1,0 +1,41 @@
+- stat:
+    path: /usr/lib/postgresql/9.6/lib/pg_qualstats.so
+  register: pg_qualstats
+
+- name: install libdpkg-perl
+  become: true
+  package:
+    name: libdpkg-perl
+    state: present
+
+- name: download pg_qualstats sources
+  unarchive:
+    src: https://github.com/dalibo/pg_qualstats/archive/1.0.2.tar.gz
+    dest: /tmp
+    remote_src: true
+  when: pg_qualstats.stat.exists == False
+
+- name: compiling pg_qualstats
+  make:
+    chdir: /tmp/pg_qualstats-1.0.2/
+  when: pg_qualstats.stat.exists == False
+
+- name: installing pg_qualstats
+  become: true
+  make:
+    chdir: /tmp/pg_qualstats-1.0.2/
+    target: install
+  when: pg_qualstats.stat.exists == False
+
+- name: remove sources
+  file:
+    path: /tmp/pg_qualstats-1.0.2/
+    state: absent
+
+- name: enable pg_qualstats extension
+  become: true
+  become_user: postgres
+  postgresql_conf:
+    key: shared_preload_libraries
+    value: pg_qualstats
+    state: append

@@ -1,0 +1,27 @@
+- stat:
+    path: /usr/lib/postgresql/9.6/lib/hypopg.so
+  register: hypopg
+
+- name: download hypopg sources
+  unarchive:
+    src: https://github.com/dalibo/hypopg/archive/1.0.0.tar.gz
+    dest: /tmp
+    remote_src: true
+  when: hypopg.stat.exists == False
+
+- name: compiling hypopg
+  make:
+    chdir: /tmp/hypopg-1.0.0/
+  when: hypopg.stat.exists == False
+
+- name: installing hypopg
+  become: true
+  make:
+    chdir: /tmp/hypopg-1.0.0/
+    target: install
+  when: hypopg.stat.exists == False
+
+- name: remove sources
+  file:
+    path: /tmp/hypopg-1.0.0/
+    state: absent

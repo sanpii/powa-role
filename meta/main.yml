@@ -1,0 +1,17 @@
+galaxy_info:
+  author: Sanpi
+  description: Powa
+
+  license: MIT
+
+  min_ansible_version: 2.4
+
+  platforms:
+    - name: Debian
+      versions:
+        - all
+
+  categories:
+    - database
+    - database:sql
+    - development
