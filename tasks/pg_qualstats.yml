@@ -10,26 +10,26 @@
 
 - name: download pg_qualstats sources
   unarchive:
-    src: https://github.com/powa-team/pg_qualstats/archive/1.0.2.tar.gz
+    src: "https://github.com/powa-team/pg_qualstats/archive/{{ pg_qualstats_version }}.tar.gz"
     dest: /tmp
     remote_src: true
   when: pg_qualstats.stat.exists == False
 
 - name: compiling pg_qualstats
   make:
-    chdir: /tmp/pg_qualstats-1.0.2/
+    chdir: "/tmp/pg_qualstats-{{ pg_qualstats_version }}/"
   when: pg_qualstats.stat.exists == False
 
 - name: installing pg_qualstats
   become: true
   make:
-    chdir: /tmp/pg_qualstats-1.0.2/
+    chdir: "/tmp/pg_qualstats-{{ pg_qualstats_version }}/"
     target: install
   when: pg_qualstats.stat.exists == False
 
 - name: remove sources
   file:
-    path: /tmp/pg_qualstats-1.0.2/
+    path: "/tmp/pg_qualstats-{{ pg_qualstats_version }}/"
     state: absent
 
 - name: enable pg_qualstats extension
