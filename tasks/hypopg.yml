@@ -4,7 +4,7 @@
 
 - name: download hypopg sources
   unarchive:
-    src: "https://github.com/dalibo/hypopg/archive/{{ powa_hypopg_version }}.tar.gz"
+    src: "https://github.com/HypoPG/hypopg/archive/{{ powa_hypopg_version }}.tar.gz"
     dest: /tmp
     remote_src: true
   when: hypopg.stat.exists == False

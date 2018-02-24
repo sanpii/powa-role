@@ -10,7 +10,7 @@
 
 - name: download pg_qualstats sources
   unarchive:
-    src: https://github.com/dalibo/pg_qualstats/archive/1.0.2.tar.gz
+    src: https://github.com/powa-team/pg_qualstats/archive/1.0.2.tar.gz
     dest: /tmp
     remote_src: true
   when: pg_qualstats.stat.exists == False

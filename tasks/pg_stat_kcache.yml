@@ -4,7 +4,7 @@
 
 - name: download pg_stat_kcache sources
   unarchive:
-    src: https://github.com/dalibo/pg_stat_kcache/archive/REL2_0_3.tar.gz
+    src: https://github.com/powa-team/pg_stat_kcache/archive/REL2_0_3.tar.gz
     dest: /tmp
     remote_src: true
   when: pg_stat_kcache.stat.exists == False

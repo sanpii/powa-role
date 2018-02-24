@@ -1,3 +1,3 @@
 # Powa
 
-Ansible role to install [PoWA](https://dalibo.github.io/powa/).
+Ansible role to install [PoWA](https://powa.readthedocs.io/).
