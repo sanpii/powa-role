@@ -4,26 +4,26 @@
 
 - name: download pg_stat_kcache sources
   unarchive:
-    src: https://github.com/powa-team/pg_stat_kcache/archive/REL2_0_3.tar.gz
+    src: "https://github.com/powa-team/pg_stat_kcache/archive/{{ pg_stat_kcache_version }}.tar.gz"
     dest: /tmp
     remote_src: true
   when: pg_stat_kcache.stat.exists == False
 
 - name: compiling pg_stat_kcache
   make:
-    chdir: /tmp/pg_stat_kcache-REL2_0_3
+    chdir: "/tmp/pg_stat_kcache-{{ pg_stat_kcache_version }}"
   when: pg_stat_kcache.stat.exists == False
 
 - name: installing pg_stat_kcache
   become: true
   make:
-    chdir: /tmp/pg_stat_kcache-REL2_0_3
+    chdir: "/tmp/pg_stat_kcache-{{ pg_stat_kcache_version }}"
     target: install
   when: pg_stat_kcache.stat.exists == False
 
 - name: remove sources
   file:
-    path: /tmp/pg_stat_kcache-REL2_0_3
+    path: "/tmp/pg_stat_kcache-{{ pg_stat_kcache_version }}"
     state: absent
 
 - name: enable pg_stat_kcache extension
