@@ -4,5 +4,6 @@
 - include_tasks: hypopg.yml
 - include_tasks: pg_stat_statements.yml
 - include_tasks: pg_stat_kcache.yml
+- include_tasks: pg_wait_sampling.yml
 - include_tasks: powa.yml
 - include_tasks: powa_web.yml

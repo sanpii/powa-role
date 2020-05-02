@@ -1,0 +1,39 @@
+- stat:
+    path: "/usr/lib/postgresql/{{ pg_version }}/lib/pg_wait_sampling.so"
+  register: pg_wait_sampling
+
+- name: download pg_wait_sampling sources
+  unarchive:
+    src: "https://github.com/postgrespro/pg_wait_sampling/archive/v{{ pg_wait_sampling_version }}.tar.gz"
+    dest: /tmp
+    remote_src: true
+  when: pg_wait_sampling.stat.exists == False
+
+- name: compiling pg_wait_sampling
+  make:
+    chdir: "/tmp/pg_wait_sampling-{{ pg_wait_sampling_version }}"
+    params:
+      USE_PGXS: 1
+  when: pg_wait_sampling.stat.exists == False
+
+- name: installing pg_wait_sampling
+  become: true
+  make:
+    chdir: "/tmp/pg_wait_sampling-{{ pg_wait_sampling_version }}"
+    target: install
+    params:
+      USE_PGXS: 1
+  when: pg_wait_sampling.stat.exists == False
+
+- name: remove sources
+  file:
+    path: "/tmp/pg_wait_sampling-{{ pg_wait_sampling_version }}"
+    state: absent
+
+- name: enable pg_wait_sampling extension
+  become: true
+  become_user: postgres
+  postgresql_conf:
+    key: shared_preload_libraries
+    value: pg_wait_sampling
+    state: append
