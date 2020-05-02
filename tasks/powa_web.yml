@@ -8,3 +8,4 @@
   become: true
   pip:
     name: powa-web
+    version: "{{ powa_web_version }}"
