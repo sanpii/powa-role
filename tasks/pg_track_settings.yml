@@ -1,0 +1,27 @@
+- stat:
+    path: "/usr/lib/postgresql/{{ pg_version }}/lib/pg_track_settings.so"
+  register: pg_track_settings
+
+- name: download pg_track_settings sources
+  unarchive:
+    src: "https://github.com/rjuju/pg_track_settings/archive/{{ pg_track_settings_version }}.tar.gz"
+    dest: /tmp
+    remote_src: true
+  when: pg_track_settings.stat.exists == False
+
+- name: compiling pg_track_settings
+  make:
+    chdir: "/tmp/pg_track_settings-{{ pg_track_settings_version }}"
+  when: pg_track_settings.stat.exists == False
+
+- name: installing pg_track_settings
+  become: true
+  make:
+    chdir: "/tmp/pg_track_settings-{{ pg_track_settings_version }}"
+    target: install
+  when: pg_track_settings.stat.exists == False
+
+- name: remove sources
+  file:
+    path: "/tmp/pg_track_settings-{{ pg_track_settings_version }}"
+    state: absent
