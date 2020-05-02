@@ -1,8 +1,31 @@
-- name: install powa
+- name: states powa.so
+  stat:
+    path: "/usr/lib/postgresql/{{ pg_version }}/lib/powa.so"
+  register: powa
+
+- name: download powa sources
+  unarchive:
+    src: "https://github.com/powa-team/powa-archivist/archive/{{ powa_version }}.tar.gz"
+    dest: /tmp
+    remote_src: true
+  when: not powa.stat.exists
+
+- name: compiling powa
+  make:
+    chdir: "/tmp/powa-archivist-{{ powa_version }}/"
+  when: not powa.stat.exists
+
+- name: installing powa
   become: true
-  package:
-    name: "postgresql-{{ pg_version }}-powa={{ powa_version }}"
-    state: present
+  make:
+    chdir: "/tmp/powa-archivist-{{ powa_version }}/"
+    target: install
+  when: not powa.stat.exists
+
+- name: remove sources
+  file:
+    path: "/tmp/powa-archivist-{{ powa_version }}/"
+    state: absent
 
 - name: enable powa extension
   become: true
