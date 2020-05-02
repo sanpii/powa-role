@@ -18,3 +18,11 @@
   with_items:
     - "postgresql-{{ pg_version }}"
     - "postgresql-contrib-{{ pg_version }}"
+
+- name: enable io timing tracking
+  become: true
+  become_user: postgres
+  postgresql_conf:
+    key: track_io_timing
+    value: on
+    state: present
