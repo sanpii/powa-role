@@ -6,7 +6,7 @@
 - name: add postgresql apt repository
   become: true
   apt_repository:
-    repo: 'deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main'
+    repo: 'deb http://apt.postgresql.org/pub/repos/apt/ {{ ansible_distribution_release }}-pgdg main'
     state: present
     filename: postgresql
 
