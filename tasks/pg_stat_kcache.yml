@@ -1,4 +1,5 @@
-- stat:
+- name: stats pg_stat_kcache.so
+  stat:
     path: "/usr/lib/postgresql/{{ pg_version }}/lib/pg_stat_kcache.so"
   register: pg_stat_kcache
 
@@ -7,19 +8,19 @@
     src: "https://github.com/powa-team/pg_stat_kcache/archive/{{ pg_stat_kcache_version }}.tar.gz"
     dest: /tmp
     remote_src: true
-  when: pg_stat_kcache.stat.exists == False
+  when: not pg_stat_kcache.stat.exists
 
 - name: compiling pg_stat_kcache
   make:
     chdir: "/tmp/pg_stat_kcache-{{ pg_stat_kcache_version }}"
-  when: pg_stat_kcache.stat.exists == False
+  when: not pg_stat_kcache.stat.exists
 
 - name: installing pg_stat_kcache
   become: true
   make:
     chdir: "/tmp/pg_stat_kcache-{{ pg_stat_kcache_version }}"
     target: install
-  when: pg_stat_kcache.stat.exists == False
+  when: not pg_stat_kcache.stat.exists
 
 - name: remove sources
   file:

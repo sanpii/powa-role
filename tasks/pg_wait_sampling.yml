@@ -1,4 +1,5 @@
-- stat:
+- name: stats pg_wait_sampling.so
+  stat:
     path: "/usr/lib/postgresql/{{ pg_version }}/lib/pg_wait_sampling.so"
   register: pg_wait_sampling
 
@@ -7,14 +8,14 @@
     src: "https://github.com/postgrespro/pg_wait_sampling/archive/v{{ pg_wait_sampling_version }}.tar.gz"
     dest: /tmp
     remote_src: true
-  when: pg_wait_sampling.stat.exists == False
+  when: not pg_wait_sampling.stat.exists
 
 - name: compiling pg_wait_sampling
   make:
     chdir: "/tmp/pg_wait_sampling-{{ pg_wait_sampling_version }}"
     params:
       USE_PGXS: 1
-  when: pg_wait_sampling.stat.exists == False
+  when: not pg_wait_sampling.stat.exists
 
 - name: installing pg_wait_sampling
   become: true
@@ -23,7 +24,7 @@
     target: install
     params:
       USE_PGXS: 1
-  when: pg_wait_sampling.stat.exists == False
+  when: not pg_wait_sampling.stat.exists
 
 - name: remove sources
   file:

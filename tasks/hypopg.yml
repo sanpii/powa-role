@@ -1,4 +1,5 @@
-- stat:
+- name: stats hypopg.so
+  stat:
     path: "/usr/lib/postgresql/{{ pg_version }}/lib/hypopg.so"
   register: hypopg
 
@@ -7,19 +8,19 @@
     src: "https://github.com/HypoPG/hypopg/archive/{{ powa_hypopg_version }}.tar.gz"
     dest: /tmp
     remote_src: true
-  when: hypopg.stat.exists == False
+  when: not hypopg.stat.exists
 
 - name: compiling hypopg
   make:
     chdir: "/tmp/hypopg-{{ powa_hypopg_version }}"
-  when: hypopg.stat.exists == False
+  when: not hypopg.stat.exists
 
 - name: installing hypopg
   become: true
   make:
     chdir: "/tmp/hypopg-{{ powa_hypopg_version }}"
     target: install
-  when: hypopg.stat.exists == False
+  when: not hypopg.stat.exists
 
 - name: remove sources
   file:

@@ -1,4 +1,5 @@
-- stat:
+- name: states pg_qualstats.so
+  stat:
     path: "/usr/lib/postgresql/{{ pg_version }}/lib/pg_qualstats.so"
   register: pg_qualstats
 
@@ -13,19 +14,19 @@
     src: "https://github.com/powa-team/pg_qualstats/archive/{{ pg_qualstats_version }}.tar.gz"
     dest: /tmp
     remote_src: true
-  when: pg_qualstats.stat.exists == False
+  when: not pg_qualstats.stat.exists
 
 - name: compiling pg_qualstats
   make:
     chdir: "/tmp/pg_qualstats-{{ pg_qualstats_version }}/"
-  when: pg_qualstats.stat.exists == False
+  when: not pg_qualstats.stat.exists
 
 - name: installing pg_qualstats
   become: true
   make:
     chdir: "/tmp/pg_qualstats-{{ pg_qualstats_version }}/"
     target: install
-  when: pg_qualstats.stat.exists == False
+  when: not pg_qualstats.stat.exists
 
 - name: remove sources
   file:
